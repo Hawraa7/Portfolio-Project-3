@@ -70,24 +70,20 @@ class Portfolio:
 
 
 
+def main():
+    selection = 100
+    initial_investment = float(input("Welcome to Hawraa Trading Platform. Enter the amount you want to invest in your portfolio: "))
+    my_portfolio = Portfolio(initial_investment)
+    while selection > 0:
+        selection = int(input(f"Please select 1 to buy a stock, 2 to sell a stock, 3 to increase your investment, 4 to withdraw from your account, 5 to check your account status or 0 to quit: "))
+        match selection:
+            case 1:
+                symbol = input("Enter the stock name: ")
+                number = float(input(f"Enter the number of stock {symbol} you want to buy: "))
+                my_portfolio.buy_stock(symbol, number)
+main()
+            
 
 
 
 
-""" 
-symbol = "AAPL"
-#url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={APIkey}"
-url = f"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={APIkey}"
-response = requests.get(url)
-stock_data = response.json()
-#print(stock_data['Time Series (Daily)']['2024-11-01']['2. high'])
-print(stock_data["Global Quote"]["05. price"])
-
-symbol = "ABBV"
-url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={APIkey}"
-response = requests.get(url)
-stock_data = response.json()
-"""
-my_portfolio = Portfolio(1000)
-my_portfolio.buy_stock("AAPL", 10)
-my_portfolio.print_status()
