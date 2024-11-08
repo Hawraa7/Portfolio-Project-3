@@ -8,6 +8,12 @@ with open('creds.json', 'r') as file:
 APIkey = JsonFile['API_KEY']
 
 def get_stock_price(symbol):
+    """  
+    Retrieves the current stock price for a given stock symbol using the alpha Vantage API,
+    This URL includes the specific function ("GLOBAL_QUOTE") to retrieve real-time quote data,
+    The response should contain a JSON object with stock information,
+    Extract the current stock price from the JSON data, and convert this price to a float for accurate numerical operations.
+    """
     url = f"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={APIkey}"
     response = requests.get(url)
     stock_data = response.json()
@@ -15,16 +21,18 @@ def get_stock_price(symbol):
     return stock_price
 
 def get_symbol_list():
+    """ 
+    Retrieves a list of stock symbols for all US-listed companies from the Alpha Vantage API,
+    Read the content of the response as CSV,
+    Extract the symbols, 
+    Skiping the header row by starting the list comprehension after index 0, row[0] is the symbol.
+    """
     url = f"https://www.alphavantage.co/query?function=LISTING_STATUS&apikey={APIkey}"
     response = requests.get(url)
     if response.status_code == 200:
-        # read the content of the response as CSV
         content = response.content.decode('utf-8').splitlines()
         csv_content = csv.reader(content)
-        
-        # extract the symbols
-        symbol_list = [row[0] for idx, row in enumerate(csv_content) if idx > 0]  # row[0] is the symbol
-        #print("The symbols are: ", symbol_list)
+        symbol_list = [row[0] for idx, row in enumerate(csv_content) if idx > 0]  
     else:
         print("Cannot retrieve the data: ", response.status_code)
     
@@ -32,12 +40,22 @@ def get_symbol_list():
 
 class Portfolio:
     def __init__(self, investment):
+        """ 
+        Initializes a Portfolio object with a given investment amount. 
+        """
         self.stock = {}
         self.investment = investment
         self.account_value = investment
         self.buying_power = investment
     
     def buy_stock(self, symbol, number):
+        """ 
+        Purchases a specified number of shares of a given stock symbol if sufficient buying power is available,
+        Retrieve the current stock price for the given symbol using the get_stock_price function,
+        Calculate the total cost of purchasing the specified number of shares,
+        Check if the portfolio has enough buying power,
+        
+        """
         stock_price = get_stock_price(symbol)
         overall_price = stock_price * number
         if self.buying_power >= overall_price:
@@ -112,7 +130,7 @@ def main():
                     if number > 0:
                         my_portfolio.sell_stock(symbol, number)
                     else: 
-                        print(f"The number you entered is imvalid!")
+                        print(f"The number you entered is invalid!")
                 else:
                     print(f"The symbol you entered is invalid!")
             case 3:
@@ -120,13 +138,13 @@ def main():
                 if number > 0:
                     my_portfolio.increase_investment(number)
                 else: 
-                    print(f"The number you entered is imvalid!")
+                    print(f"The number you entered is invalid!")
             case 4:
                 number = float(input(f"Enter the number you want to  withdraw from your account: "))
                 if number > 0:
                     my_portfolio.withdraw(number)
                 else:
-                    print(f"The number you entered is imvalid!")
+                    print(f"The number you entered is invalid!")
 
             case 5:
                 my_portfolio.print_status()
