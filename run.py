@@ -1,5 +1,6 @@
 import requests
 import json
+import csv
 """ Including the Alpha Vantage API key """
 
 with open('creds.json', 'r') as file:
@@ -12,6 +13,22 @@ def get_stock_price(symbol):
     stock_data = response.json()
     stock_price = float(stock_data["Global Quote"]["05. price"])
     return stock_price
+
+def get_symbol_list():
+    url = f"https://www.alphavantage.co/query?function=LISTING_STATUS&apikey={APIkey}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        # read the content of the response as CSV
+        content = response.content.decode('utf-8').splitlines()
+        csv_content = csv.reader(content)
+        
+        # extract the symbols
+        symbol_list = [row[0] for idx, row in enumerate(csv_content) if idx > 0]  # row[0] is the symbol
+        #print("The symbols are: ", symbol_list)
+    else:
+        print("Cannot retrieve the data: ", response.status_code)
+    
+    return symbol_list
 
 class Portfolio:
     def __init__(self, investment):
@@ -79,8 +96,15 @@ def main():
         match selection:
             case 1:
                 symbol = input("Enter the stock name: ")
-                number = float(input(f"Enter the number of stock {symbol} you want to buy: "))
-                my_portfolio.buy_stock(symbol, number)
+                symbol_list = get_symbol_list()
+                if symbol in symbol_list:
+                    number = float(input(f"Enter the number of stock {symbol} you want to buy: "))
+                    if number > 0:
+                        my_portfolio.buy_stock(symbol, number)
+                    else:
+                        print(f"The number you entered is invalid!")
+                else:
+                    print(f"The symbol you entered is invalid!")
             case 2:
                 symbol = input("Enter the stock name: ")
                 number = float(input(f"Enter the number of stock {symbol} you want to sell: "))
