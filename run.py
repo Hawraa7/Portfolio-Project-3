@@ -48,10 +48,10 @@ class Portfolio:
             print(f"self.stock is not in the portfolio.")
         
     def update_account_value(self):
-        account_value = self.buying_power
+        self.account_value = self.buying_power
         for stock in self.stock:
             stock_price = get_stock_price(stock)
-            account_value += stock_price * self.stock[stock]
+            self.account_value += stock_price * self.stock[stock]
 
     def increase_investment(self, amount):
         self.investment += amount
@@ -81,6 +81,25 @@ def main():
                 symbol = input("Enter the stock name: ")
                 number = float(input(f"Enter the number of stock {symbol} you want to buy: "))
                 my_portfolio.buy_stock(symbol, number)
+            case 2:
+                symbol = input("Enter the stock name: ")
+                number = float(input(f"Enter the number of stock {symbol} you want to sell: "))
+                my_portfolio.sell_stock(symbol, number)
+            case 3:
+                number = float(input(f"How much you want to increase your investment? "))
+                my_portfolio.increase_investment(number)
+            case 4:
+                number = float(input(f"Enter the number you want to  withdraw from your account: "))
+                my_portfolio.withdraw(number)
+            case 5:
+                my_portfolio.print_status()
+            case 0:
+                print(f"Thanks!")
+            case _:
+                print(f"Please select 1, 2, 3, 4, 5, or 0")
+            
+                
+
 main()
             
 
