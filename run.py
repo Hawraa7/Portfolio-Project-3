@@ -107,14 +107,27 @@ def main():
                     print(f"The symbol you entered is invalid!")
             case 2:
                 symbol = input("Enter the stock name: ")
-                number = float(input(f"Enter the number of stock {symbol} you want to sell: "))
-                my_portfolio.sell_stock(symbol, number)
+                if symbol in symbol_list:
+                    number = float(input(f"Enter the number of stock {symbol} you want to sell: "))
+                    if number > 0:
+                        my_portfolio.sell_stock(symbol, number)
+                    else: 
+                        print(f"The number you entered is imvalid!")
+                else:
+                    print(f"The symbol you entered is invalid!")
             case 3:
                 number = float(input(f"How much you want to increase your investment? "))
-                my_portfolio.increase_investment(number)
+                if number > 0:
+                    my_portfolio.increase_investment(number)
+                else: 
+                    print(f"The number you entered is imvalid!")
             case 4:
                 number = float(input(f"Enter the number you want to  withdraw from your account: "))
-                my_portfolio.withdraw(number)
+                if number > 0:
+                    my_portfolio.withdraw(number)
+                else:
+                    print(f"The number you entered is imvalid!")
+
             case 5:
                 my_portfolio.print_status()
             case 0:
