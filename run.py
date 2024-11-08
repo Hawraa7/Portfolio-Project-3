@@ -34,8 +34,7 @@ def get_symbol_list():
         csv_content = csv.reader(content)
         symbol_list = [row[0] for idx, row in enumerate(csv_content) if idx > 0]  
     else:
-        print(f"Cannot retrieve the data: , response.status_code")..............
-    
+        print(f"Cannot retrieve the data: {response.status_code}")
     return symbol_list
 
 class Portfolio:
