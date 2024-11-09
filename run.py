@@ -123,42 +123,57 @@ def main():
     initial_investment = float(input("Welcome to Hawraa Trading Platform. Enter the amount you want to invest in your portfolio: \n"))
     my_portfolio = Portfolio(initial_investment)
     while selection > 0:
+        symbol_list = get_symbol_list()
         selection = int(input(f"Please select 1 to buy a stock, 2 to sell a stock, 3 to increase your investment, 4 to withdraw from your account, 5 to check your account status or 0 to quit: \n"))
         match selection:
             case 1:
                 symbol = input("Enter the stock name: \n")
-                symbol_list = get_symbol_list()
                 if symbol in symbol_list:
-                    number = float(input(f"Enter the number of stock {symbol} you want to buy: \n"))
-                    if isinstance(number, (int,float)) and number > 0:
-                        my_portfolio.buy_stock(symbol, number)
-                    else:
+                    number = input(f"Enter the number of stock {symbol} you want to buy: \n")
+                    try:
+                        number = float(number)
+                        if number > 0:
+                            my_portfolio.buy_stock(symbol, number)
+                        else:
+                            print(f"The number you entered needs to be greater than zero!")
+                    except:
                         print(f"The value you entered is invalid!")
                 else:
                     print(f"The symbol you entered is invalid!")
             case 2:
                 symbol = input("Enter the stock name: \n")
                 if symbol in symbol_list:
-                    number = float(input(f"Enter the number of stock {symbol} you want to sell: \n"))
-                    if isinstance(number, (int,float)) and number > 0:
-                        my_portfolio.sell_stock(symbol, number)
-                    else: 
+                    number = input(f"Enter the number of stock {symbol} you want to sell: \n")
+                    try:
+                        number = float(number)
+                        if number > 0:
+                            my_portfolio.sell_stock(symbol, number)
+                        else: 
+                            print(f"The number you entered needs to be greater than zero!")
+                    except:
                         print(f"The value you entered is invalid!")
                 else:
                     print(f"The symbol you entered is invalid!")
             case 3:
-                number = float(input(f"How much you want to increase your investment? \n"))
-                if isinstance(number, (int,float)) and number > 0:
-                    my_portfolio.increase_investment(number)
-                else: 
+                number = input(f"How much you want to increase your investment? \n")
+                try:
+                    number = float(number)
+                    if number > 0:
+                        my_portfolio.increase_investment(number)
+                    else: 
+                        print(f"The number you entered needs to be greater than zero!")
+                except:
                     print(f"The value you entered is invalid!")
             case 4:
-                number = float(input(f"Enter the number you want to  withdraw from your account: \n"))
-                if isinstance(number, (int,float)) and number > 0:
-                    my_portfolio.withdraw(number)
-                else:
+                number = input(f"Enter the number you want to withdraw from your account: \n")
+                try:
+                    number = float(number)
+                    if number > 0:
+                        my_portfolio.withdraw(number)
+                    else:
+                        print(f"The number you entered needs to be greater than zero!")
+                except:
                     print(f"The value you entered is invalid!")
-
             case 5:
                 my_portfolio.print_status()
             case 0:
