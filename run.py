@@ -130,34 +130,34 @@ def main():
                 symbol_list = get_symbol_list()
                 if symbol in symbol_list:
                     number = float(input(f"Enter the number of stock {symbol} you want to buy: \n"))
-                    if number > 0:
+                    if isinstance(number, (int,float)) and number > 0:
                         my_portfolio.buy_stock(symbol, number)
                     else:
-                        print(f"The number you entered is invalid!")
+                        print(f"The value you entered is invalid!")
                 else:
                     print(f"The symbol you entered is invalid!")
             case 2:
                 symbol = input("Enter the stock name: \n")
                 if symbol in symbol_list:
                     number = float(input(f"Enter the number of stock {symbol} you want to sell: \n"))
-                    if number > 0:
+                    if isinstance(number, (int,float)) and number > 0:
                         my_portfolio.sell_stock(symbol, number)
                     else: 
-                        print(f"The number you entered is invalid!")
+                        print(f"The value you entered is invalid!")
                 else:
                     print(f"The symbol you entered is invalid!")
             case 3:
                 number = float(input(f"How much you want to increase your investment? \n"))
-                if number > 0:
+                if isinstance(number, (int,float)) and number > 0:
                     my_portfolio.increase_investment(number)
                 else: 
-                    print(f"The number you entered is invalid!")
+                    print(f"The value you entered is invalid!")
             case 4:
                 number = float(input(f"Enter the number you want to  withdraw from your account: \n"))
-                if number > 0:
+                if isinstance(number, (int,float)) and number > 0:
                     my_portfolio.withdraw(number)
                 else:
-                    print(f"The number you entered is invalid!")
+                    print(f"The value you entered is invalid!")
 
             case 5:
                 my_portfolio.print_status()
