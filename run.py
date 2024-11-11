@@ -9,10 +9,9 @@ APIkey = JsonFile['API_KEY']
 
 def get_stock_price(symbol):
     """  
-    Retrieve the current stock price for a given stock symbol using the alpha Vantage API,
-    This URL includes the specific function ("GLOBAL_QUOTE") to retrieve real-time quote data,
-    The response should contain a JSON object with stock information,
-    Extract the current stock price from the JSON data, and convert this price to a float for accurate numerical operations.
+    Retrieves the current stock price for a given symbol using the Alpha Vantage API,
+    Uses the "GLOBAL_QUOTE" function to obtain real-time quote data,
+    Parses the JSON response and extracts the stock price, converting it to a float for accuracy.
     """
     url = f"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={APIkey}"
     response = requests.get(url)
@@ -22,10 +21,9 @@ def get_stock_price(symbol):
 
 def get_symbol_list():
     """ 
-    Retrieve a list of stock symbols for all US-listed companies from the Alpha Vantage API,
-    Read the content of the response as CSV,
-    Extract the symbols, 
-    Skiping the header row by starting the list comprehension after index 0, row[0] is the symbol.
+    Retrieves a list of stock symbols for all US-listed companies from the Alpha Vantage API,
+    Reads the response content as CSV data and extracts each stock symbol,
+    Skips the header row in the CSV data to start the list from the first symbol.
     """
     url = f"https://www.alphavantage.co/query?function=LISTING_STATUS&apikey={APIkey}"
     response = requests.get(url)
@@ -47,11 +45,10 @@ class Portfolio:
     
     def buy_stock(self, symbol, number):
         """ 
-        Purchase a specified number of shares of a given stock symbol if sufficient buying power is available,
-        Retrieve the current stock price for the given symbol using the get_stock_price function,
-        Calculate the total cost of purchasing the specified number of shares,
-        Check if the portfolio has enough buying power,
-        Buy the stock and calculate the overall_price.
+        Purchases a specified number of shares of a given stock symbol if enough buying power is available,
+        Retrieves the current stock price using the get_stock_price function,
+        Calculates the total cost for purchasing the shares and checks if buying power is sufficient,
+        If sufficient, updates the stock holdings and reduces the buying power by the total cost.
         """
         stock_price = get_stock_price(symbol)
         overall_price = stock_price * number
@@ -62,17 +59,16 @@ class Portfolio:
                 self.stock[symbol] = number
             self.buying_power -= overall_price
         else:
-            print(f"You do not have enough buying power") 
-    
+            print("You do not have enough buying power!") 
     
     def sell_stock(self, symbol, number):
         """ 
-        Check if the symbol of stock is in the portfolio,
-        Ensure that there are enough shares of the stock to sell. If not, display an error message,
-        Fetche the current stock price using the get_stock_price function,
-        Calculate the total amount that will be received from selling the specified number of shares.
+        Checks if the specified stock symbol is in the portfolio,
+        Ensures that there are enough shares available to sell; if not, displays an error message,
+        Fetches the current stock price using the get_stock_price function,
+        Calculates the total amount received from selling the specified number of shares and updates the buying power.
         """
-        if (symbol in self.stock):
+        if symbol in self.stock:
             if self.stock[symbol] >= number:
                 stock_price = get_stock_price(symbol)
                 overall_price = stock_price * number
@@ -81,11 +77,12 @@ class Portfolio:
             else: 
                 print(f"You do not have enough number of {symbol} stocks to sell")
         else:
-            print(f"self.stock is not in the portfolio.")
+            print(f"The stock symbol '{symbol}' is not in the portfolio.")
         
     def update_account_value(self):
         """ 
-        Updating the account_value by recalculating it based on the current buying power and the value of all stocks held in the portfolio.
+        Updates the account value by recalculating it based on the current buying power 
+        and the market value of all stocks held in the portfolio.
         """
         self.account_value = self.buying_power
         for stock in self.stock:
@@ -93,29 +90,27 @@ class Portfolio:
             self.account_value += stock_price * self.stock[stock]
 
     def increase_investment(self, amount):
-        """ Increase the portfolio's investment and buying power by a specified amount """
+        """ Increases the portfolio's total investment and buying power by a specified amount."""
         self.investment += amount
         self.buying_power += amount 
     
     def withdraw(self, amount):
         """
-        Verifie that the portfolio has enough buying_power to process the withdrawal,
-        If not, display an error meassage.
+        Verifies that the portfolio has sufficient buying power to process the withdrawal,
+        If not, displays an error message.
         """
         if self.buying_power >= amount:
             self.investment -= amount
             self.buying_power -= amount 
         else:
-            print(f"You do not have enough liquidity!")
+            print("You do not have enough liquidity!")
 
     def print_status(self):
-        """ 
-        Print the current status of the portfolio including the buying power, the account value, the total investment and the stocks.
+        """
+        Prints the current status of the portfolio, including buying power, account value, total investment, and stock holdings.
         """
         self.update_account_value()
         print(f"The buying power is: {self.buying_power}, the account value is {self.account_value}, the investment is {self.investment}, and the stocks are {self.stock}")
-
-
 
 def main():
     """ Run all program functions """ 
@@ -124,7 +119,7 @@ def main():
     my_portfolio = Portfolio(initial_investment)
     while selection > 0:
         symbol_list = get_symbol_list()
-        selection = int(input(f"Please select 1 to buy a stock, 2 to sell a stock, 3 to increase your investment, 4 to withdraw from your account, 5 to check your account status or 0 to quit: \n"))
+        selection = int(input("Please select 1 to buy a stock, 2 to sell a stock, 3 to increase your investment, 4 to withdraw from your account, 5 to check your account status or 0 to quit: \n"))
         match selection:
             case 1:
                 symbol = input("Enter the stock name: \n")
@@ -135,11 +130,11 @@ def main():
                         if number > 0:
                             my_portfolio.buy_stock(symbol, number)
                         else:
-                            print(f"The number you entered needs to be greater than zero!")
+                            print("The number you entered needs to be greater than zero!")
                     except:
-                        print(f"The value you entered is invalid!")
+                        print("The value you entered is invalid!")
                 else:
-                    print(f"The symbol you entered is invalid!")
+                    print("The symbol you entered is invalid!")
             case 2:
                 symbol = input("Enter the stock name: \n")
                 if symbol in symbol_list:
@@ -149,37 +144,37 @@ def main():
                         if number > 0:
                             my_portfolio.sell_stock(symbol, number)
                         else: 
-                            print(f"The number you entered needs to be greater than zero!")
+                            print("The number you entered needs to be greater than zero!")
                     except:
-                        print(f"The value you entered is invalid!")
+                        print("The value you entered is invalid!")
                 else:
-                    print(f"The symbol you entered is invalid!")
+                    print("The symbol you entered is invalid!")
             case 3:
-                number = input(f"How much you want to increase your investment? \n")
+                number = input("How much you want to increase your investment? \n")
                 try:
                     number = float(number)
                     if number > 0:
                         my_portfolio.increase_investment(number)
                     else: 
-                        print(f"The number you entered needs to be greater than zero!")
+                        print("The number you entered needs to be greater than zero!")
                 except:
-                    print(f"The value you entered is invalid!")
+                    print("The value you entered is invalid!")
             case 4:
-                number = input(f"Enter the number you want to withdraw from your account: \n")
+                number = input("Enter the number you want to withdraw from your account: \n")
                 try:
                     number = float(number)
                     if number > 0:
                         my_portfolio.withdraw(number)
                     else:
-                        print(f"The number you entered needs to be greater than zero!")
+                        print("The number you entered needs to be greater than zero!")
                 except:
-                    print(f"The value you entered is invalid!")
+                    print("The value you entered is invalid!")
             case 5:
                 my_portfolio.print_status()
             case 0:
-                print(f"Thanks!")
+                print("Thanks!")
             case _:
-                print(f"Please select 1, 2, 3, 4, 5, or 0")
+                print("Please select 1, 2, 3, 4, 5, or 0")
             
                 
 
