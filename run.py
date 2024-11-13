@@ -11,57 +11,34 @@ with open('creds.json', 'r') as file:
 APIkey = JsonFile['API_KEY']
 
 def clear_terminal():
-    # Check the operating system and run the appropriate clear command
-    if os.name == 'nt':  # For Windows
-        os.system('cls')
-    else:  # For Mac and Linux
-        os.system('clear')
-
-
-
-def get_stock_price_old(symbol):
-    """  
-    Retrieves the current stock price for a given symbol using the Alpha Vantage API,
-    Uses the "GLOBAL_QUOTE" function to obtain real-time quote data,
-    Parses the JSON response and extracts the stock price, converting it to a float for accuracy.
     """
-    url = f"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={APIkey}"
-    response = requests.get(url)
-    stock_data = response.json()
-    stock_price = float(stock_data["Global Quote"]["05. price"])
-    return stock_price
+    Clear the terminal screen based on the operating system,
+    For Windows, run the 'cls' command,
+    For Mac and Linux, run the 'clear' command,
+    """
+    if os.name == 'nt':  
+        os.system('cls')
+    else:
+        os.system('clear')
 
 def get_stock_price(symbol):
     """  
-    Retrieves the current stock price for a given symbol using the Alpha Vantage API,
-    Uses the "GLOBAL_QUOTE" function to obtain real-time quote data,
-    Parses the JSON response and extracts the stock price, converting it to a float for accuracy.
+    Retrieve the latest closing stock price for a given symbol,
+    - Create a Ticker object for the given stock symbol using yfinance,
+    - Retrieve the historical price data for the stock for a 1-day period,
+    - Access the closing price for the most recent day available,
+    - The closing stock price as a float or numeric value.
     """
     stock = yf.Ticker(symbol)
     stock_price = stock.history(period="1d")['Close'].iloc[0]
     return stock_price
-
-def get_symbol_list_old():
-    """ 
-    Retrieves a list of stock symbols for all US-listed companies from the Alpha Vantage API,
-    Reads the response content as CSV data and extracts each stock symbol,
-    Skips the header row in the CSV data to start the list from the first symbol.
-    url = f"https://www.alphavantage.co/query?function=LISTING_STATUS&apikey={APIkey}"
-    """
-    response = requests.get(url)
-    if response.status_code == 200:
-        content = response.content.decode('utf-8').splitlines()
-        csv_content = csv.reader(content)
-        symbol_list = [row[0] for idx, row in enumerate(csv_content) if idx > 0]  
-    else:
-        print(f"Cannot retrieve the data: {response.status_code}")
-    return symbol_list
-
+   
 def get_symbol_list():
     """ 
-    Retrieves a list of stock symbols for all US-listed companies from the Alpha Vantage API,
-    Reads the response content as CSV data and extracts each stock symbol,
-    Skips the header row in the CSV data to start the list from the first symbol.
+    Retrieve a list of stock symbols from a local file,
+    - Open the file 'stock_list.txt' in read mode,
+    - Load the contents of the file as JSON data and store it in symbol_list,
+    - The list of stock symbols.
     """
     with open('stock_list.txt', 'r') as file:
         symbol_list = json.load(file)
@@ -124,7 +101,9 @@ class Portfolio:
             self.account_value += stock_price * self.stock[stock]
 
     def increase_investment(self, amount):
-        """ Increases the portfolio's total investment and buying power by a specified amount."""
+        """ 
+        Increases the portfolio's total investment and buying power by a specified amount. 
+        """ 
         self.investment += amount
         self.buying_power += amount 
         print(f"You have successfully added {number} to your account.")
@@ -142,14 +121,16 @@ class Portfolio:
             print("You do not have enough liquidity!")
 
     def print_status(self):
-        """
-        Prints the current status of the portfolio, including buying power, account value, total investment, and stock holdings.
+        """ 
+        Prints the current status of the portfolio, including buying power, account value, total investment, and stock holdings. 
         """
         self.update_account_value()
         print(f"Your buying power is: {self.buying_power}, your account value is {self.account_value}, your investment is {self.investment}, and the stocks in your portfolio are {self.stock}")
 
 def main():
-    """ Run all program functions """ 
+    """ 
+    Run all program functions 
+    """
     selection = 100
     symbol_list = get_symbol_list()
     initial_investment = float(input("Welcome to Hawraa Trading Platform. Enter the amount you want to invest in your portfolio: \n"))
@@ -222,8 +203,6 @@ def main():
             case _:
                 print("Please select 1, 2, 3, 4, or 0")
             
-                
-
 main()
             
 
