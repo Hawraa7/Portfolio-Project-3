@@ -10,6 +10,7 @@ with open('creds.json', 'r') as file:
     JsonFile = json.load(file)
 APIkey = JsonFile['API_KEY']
 
+
 def clear_terminal():
     """
     Clear the terminal screen based on the operating system,
@@ -20,6 +21,7 @@ def clear_terminal():
         os.system('cls')
     else:
         os.system('clear')
+
 
 def get_stock_price(symbol):
     """  
@@ -33,6 +35,7 @@ def get_stock_price(symbol):
     stock_price = stock.history(period="1d")['Close'].iloc[0]
     return stock_price
    
+
 def get_symbol_list():
     """ 
     Retrieve a list of stock symbols from a local file,
@@ -44,6 +47,7 @@ def get_symbol_list():
         symbol_list = json.load(file)
     return symbol_list
 
+
 class Portfolio:
     def __init__(self, investment):
         """ Initializes a Portfolio object with a given investment amount """ 
@@ -51,7 +55,8 @@ class Portfolio:
         self.investment = investment
         self.account_value = investment
         self.buying_power = investment
-    
+        
+
     def buy_stock(self, symbol, number):
         """ 
         Purchases a specified number of shares of a given stock symbol if enough buying power is available,
@@ -71,6 +76,7 @@ class Portfolio:
         else:
             print("You do not have enough buying power!") 
     
+
     def sell_stock(self, symbol, number):
         """ 
         Checks if the specified stock symbol is in the portfolio,
@@ -90,6 +96,7 @@ class Portfolio:
         else:
             print(f"The stock symbol '{symbol}' is not in the portfolio.")
         
+
     def update_account_value(self):
         """ 
         Updates the account value by recalculating it based on the current buying power 
@@ -100,14 +107,16 @@ class Portfolio:
             stock_price = get_stock_price(stock)
             self.account_value += stock_price * self.stock[stock]
 
+
     def increase_investment(self, amount):
         """ 
         Increases the portfolio's total investment and buying power by a specified amount. 
         """ 
         self.investment += amount
         self.buying_power += amount 
-        print(f"You have successfully added {number} to your account.")
+        print(f"You have successfully added {amount} to your account.")
     
+
     def withdraw(self, amount):
         """
         Verifies that the portfolio has sufficient buying power to process the withdrawal,
@@ -116,9 +125,10 @@ class Portfolio:
         if self.buying_power >= amount:
             self.investment -= amount
             self.buying_power -= amount 
-            print(f"You have successfully withdrawn {number} from your account.")
+            print(f"You have successfully withdrawn {amount} from your account.")
         else:
             print("You do not have enough liquidity!")
+
 
     def print_status(self):
         """ 
@@ -126,6 +136,7 @@ class Portfolio:
         """
         self.update_account_value()
         print(f"Your buying power is: {self.buying_power}, your account value is {self.account_value}, your investment is {self.investment}, and the stocks in your portfolio are {self.stock}")
+
 
 def main():
     """ 
