@@ -8,7 +8,8 @@ In my project, which runs in the Code Institute mock terminal on Heroku, the pla
 In this Project-Portfolio, the Platform offers tools to manage and track the investment, showing gains, losses, and asset allocation.
 
 Here is the live version of my project.
-(screenchot).......................
+
+![Screenshot of the live version of the project](Screenshotversion.png)
 
 ## How starting investing on the platform ?
 
@@ -27,17 +28,18 @@ The platform offers more options for the user to choose what and how he wants to
 - Initial Investment Setup:
   - The user starts by entering an initial investment amount to create his portfolio.
   - Next, he has more options to invest his amount.
-(screenshot).....................
+
+![Screenshot of the investment](Screenshotinvestment.png)
 - Option 1 : Buying Stocks
 
   - The user purchases stocks by specifying a stock symbol and the number of stocks they want to buy.
   - The platform checks if the user has enough buying power to complete the purchase. If they do, it adds the stocks to the portfolio and deducts the cost from their buying power.
-(screenshot)....................
+![Screenshot of buying stocks](Screenshotbuying.png)
 - Option 2: Selling Stocks
 
   - The user can sell stocks they own by specifying the symbol and quantity.
   - The platform checks if the user owns enough stocks to sell the requested amount. If so, it sells the shares, adds the sale proceeds to the buying power, and updates the stock quantity.
-(screenshot).....................
+![Screenshot of selling stocks](Screenshotselling.png)
 - Stock Symbol Verification
 
   - When buying or selling stocks, the platform checks if the entered stock symbol is valid by consulting a list of stock symbols from an external data source.
@@ -45,11 +47,11 @@ The platform offers more options for the user to choose what and how he wants to
 - Option 3: Increasing Investment
 
   - Users can increase the cash in their portfolio by adding more funds to their initial investment and available buying power. The condition of increase the investment is the number needs to be greater than zero.
-(screenshot).....................
+![Screenshot of increasing investment](Screenshotincreasing.png)
 - Option 4: Withdrawing Funds
 
   - Users can withdraw money from their available buying power. The platform ensures that the user has enough funds to cover the withdrawal. Also here, The condition of withdraw funds is the positive value of the number which user wants to withdraw.
-(screenshot).....................
+![Screenshot of withdrawing funds](Screenshotwithdrawing.png)
 - Account Status Check:
 
   - Users can check their portfolio's current status, which includes:
@@ -57,7 +59,7 @@ The platform offers more options for the user to choose what and how he wants to
     - Account Value: The total value of the portfolio, including both cash and stocks (using current stock prices from the yfinance library).
     - Investment: The initial invested amount plus any additional funds added.
     - Stock Holdings: A list of the stocks in the portfolio, including symbols and quantities.
-(screenshot lal check wl if wl else).....................
+![Screenshot of the portfolio's status](Screenshotportfoliostatus.png)
 ### Future Features
 
 - Allow users to collaborate on investments, share insights, and collectively analyze market trends.

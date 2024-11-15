@@ -4,12 +4,6 @@ import csv
 import yfinance as yf
 import os
 
-""" Including the Alpha Vantage API key """
-
-with open('creds.json', 'r') as file:
-    JsonFile = json.load(file)
-APIkey = JsonFile['API_KEY']
-
 
 def clear_terminal():
     """
