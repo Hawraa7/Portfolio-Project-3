@@ -90,8 +90,8 @@ def save_creds(creds):
     update_heroku_config_var("CREDS_JSON", creds_json)
 
     # Save locally for testing purposes
-    with open('creds.json', 'w') as f:
-        json.dump(creds, f, indent=4)
+    #with open('creds.json', 'w') as f:
+    #    json.dump(creds, f, indent=4)
 
 def assign_id():
     """
