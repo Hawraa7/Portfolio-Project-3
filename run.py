@@ -68,11 +68,12 @@ def load_portfolio(pin, password):
     for user in data:
         if user["id"] == pin and user["password"] == password:
             # load existing user's data
-            my_portfolio = Portfolio(1, password, pin)
+            my_portfolio = Portfolio(1000, password, pin)
             my_portfolio.stock = user["stock"]
             my_portfolio.investment = user["investment"]
             my_portfolio.account_value = user["account_value"]
             my_portfolio.buying_power = user["buying_power"]
+            my_portfolio.save_update()
             print("Your account login was successful!!")
             return True, my_portfolio            
     print("User id or password does not match!!")
