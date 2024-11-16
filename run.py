@@ -64,7 +64,7 @@ def save_creds(creds):
     creds_json = json.dumps(creds)
 
     # Update Heroku's Config Vars (requires Heroku CLI or API)
-    heroku_app_name = "Portfolio-Project-3"  # Replace with your app's name
+    heroku_app_name = "Hawraa7/Portfolio-Project-3"  # Replace with your app's name
     os.system(f"heroku config:set CREDS_JSON='{creds_json}' --app {heroku_app_name}")
 
     # Save locally for testing purposes
