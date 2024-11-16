@@ -40,6 +40,37 @@ def get_symbol_list():
         symbol_list = json.load(file)
     return symbol_list
 
+def load_creds():
+    
+    # Load the credentials from an environment variable or fall back to a local creds.json file for development.
+    
+    creds_json = os.getenv('CREDS_JSON')
+
+    if creds_json:
+        creds = json.loads(creds_json)
+    else:
+        try:
+            with open('creds.json', 'r') as f:
+                creds = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            creds = {"clients": []}  # Default structure
+    return creds
+
+def save_creds(creds):
+    """
+    Save updated credentials to the environment variable.
+    Converts the dictionary to JSON and updates the CREDS_JSON environment variable.
+    """
+    creds_json = json.dumps(creds)
+
+    # Update Heroku's Config Vars (requires Heroku CLI or API)
+    heroku_app_name = "Portfolio-Project-3"  # Replace with your app's name
+    os.system(f"heroku config:set CREDS_JSON='{creds_json}' --app {heroku_app_name}")
+
+    # Save locally for testing purposes
+    with open('creds.json', 'w') as f:
+        json.dump(creds, f, indent=4)
+
 def assign_id():
     """
     Assigns a unique ID to a new user by scanning existing user data from a file,
@@ -50,11 +81,7 @@ def assign_id():
     Increments the highest ID by one and returns it as the new unique ID,
     The next available numeric ID (highest ID in the data incremented by 1).
     """ 
-    try:
-        with open('creds.json', 'r') as f:
-            data = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        data = []   
+    data = load_creds()   
     id_assigned = 0
     for user in data:
         id_assigned = int(user["id"])         
@@ -77,11 +104,7 @@ def load_portfolio(pin, password):
          - Prints an error message indicating that the user ID or password is incorrect.
          - Returns `False` and an empty list.
     """
-    try:
-        with open('creds.json', 'r') as f:
-            data = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        data = [] 
+    data = load_creds() 
     for user in data:
         if user["id"] == pin and user["password"] == password:
             my_portfolio = Portfolio(1000, password, pin)
@@ -127,11 +150,7 @@ class Portfolio:
         Writes the updated list of user data back to the file:
        - Saves the data in a human-readable JSON format with an indentation of 4 spaces.
         """
-        try:
-            with open(self.creds, 'r') as f:
-                    data = json.load(f)
-        except (FileNotFoundError, json.JSONDecodeError):
-            data = []
+        data = load_creds()
         user_found = False
         for user in data:
             if user["id"] == self.id:
@@ -152,8 +171,7 @@ class Portfolio:
                 "id": self.id,
                 "creds": self.creds
             })
-        with open(self.creds, 'w') as f:
-            json.dump(data, f, indent=4)
+        save_creds(data)
 
 
     def buy_stock(self, symbol, number):
