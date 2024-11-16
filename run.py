@@ -41,14 +41,20 @@ def get_symbol_list():
     return symbol_list
 
 def assign_id():
-    # Load existing data from the file
+    """
+    Assigns a unique ID to a new user by scanning existing user data from a file,
+    Attempts to load existing user data from the file `creds.json`,
+       - If the file doesn't exist or contains invalid JSON, initializes an empty list.
+    Iterates over the list of users to find the highest existing ID,
+       - Assumes that each user in the list has an "id" field containing a numeric value.
+    Increments the highest ID by one and returns it as the new unique ID,
+    The next available numeric ID (highest ID in the data incremented by 1).
+    """ 
     try:
         with open('creds.json', 'r') as f:
             data = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
-        data = []  # start with an empty list if the file doesn't exist or is invalid
-
-    # Scan the existing users and assign the new id as the last one incremented by one
+        data = []   
     id_assigned = 0
     for user in data:
         id_assigned = int(user["id"])         
@@ -56,18 +62,28 @@ def assign_id():
     return id_assigned
 
 def load_portfolio(pin, password):
-    # Load existing data from the file
+    """
+    Loads a user's portfolio from the existing data file based on the provided PIN and password,
+    Attempts to load user data from the file `creds.json`:
+       - If the file does not exist or contains invalid JSON, initializes an empty list (`data`).
+    Iterates through the list of user dictionaries to find a match for the provided PIN and password,
+       - If a match is found:
+         - Initializes a `Portfolio` object with the user's information.
+         - Sets the portfolio attributes (`stock`, `investment`, `account_value`, and `buying_power`)
+           based on the matched user data.
+         - Calls the `save_update` method on the `Portfolio` object to save or update its data.
+         - Prints a success message and returns `True` along with the `Portfolio` object.
+       - If no match is found:
+         - Prints an error message indicating that the user ID or password is incorrect.
+         - Returns `False` and an empty list.
+    """
     try:
         with open('creds.json', 'r') as f:
             data = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
-        data = []  # start with an empty list if the file doesn't exist or is invalid
-    
-
-    # Check if the user exists and load otherwise return an error message
+        data = [] 
     for user in data:
         if user["id"] == pin and user["password"] == password:
-            # load existing user's data
             my_portfolio = Portfolio(1000, password, pin)
             my_portfolio.stock = user["stock"]
             my_portfolio.investment = user["investment"]
@@ -82,7 +98,9 @@ def load_portfolio(pin, password):
 
 class Portfolio:
     def __init__(self, investment=0, password='none', number=-1, creds='creds.json'):
-        """ Initializes a Portfolio object with a given investment amount """ 
+        """
+        Initializes a Portfolio object with a given investment amount 
+        """ 
         self.stock = {}
         self.investment = investment
         self.account_value = investment
@@ -90,35 +108,40 @@ class Portfolio:
         self.password = password
         self.id = number
         self.creds = creds
-        # save or update user info in the creds.json file
+        """
+        Save or update user info in the creds.json file
+        """
         self.save_update()
 
 
     def save_update(self):
-            """
-            Save the user data or update it if the user already exists.
-            """
-            # Load existing data from the file
-            try:
-                with open(self.creds, 'r') as f:
+        """
+        Saves the current user's data to the file or updates it if the user already exists,
+        Loads existing user data from the file specified in `self.creds`:
+       - If the file does not exist or contains invalid JSON, initializes an empty list (`data`).
+        Searches for the user in the loaded data by comparing their unique identifier (`self.id`):
+       - If a match is found:
+         - Updates the existing user's data with the current instance attributes,
+       - If no match is found:
+         - Appends a new dictionary containing the current user's data to the list,
+        Writes the updated list of user data back to the file:
+       - Saves the data in a human-readable JSON format with an indentation of 4 spaces.
+        """
+        try:
+            with open(self.creds, 'r') as f:
                     data = json.load(f)
-            except (FileNotFoundError, json.JSONDecodeError):
-                data = []  # start with an empty list if the file doesn't exist or is invalid
-
-            # Check if the user exists
-            user_found = False
-            for user in data:
-                if user["id"] == self.id:
-                    # Update existing user's data
-                    user["stock"] = self.stock
-                    user["investment"] = self.investment
-                    user["account_value"] = self.account_value
-                    user["buying_power"] = self.buying_power
-                    user["password"] = self.password
-                    user_found = True
-                    break
-
-            # If the user doesn't exist, append the new user's data
+        except (FileNotFoundError, json.JSONDecodeError):
+            data = []
+        user_found = False
+        for user in data:
+            if user["id"] == self.id:
+                user["stock"] = self.stock
+                user["investment"] = self.investment
+                user["account_value"] = self.account_value
+                user["buying_power"] = self.buying_power
+                user["password"] = self.password
+                user_found = True
+                break
             if not user_found:
                 data.append({
                     "stock": self.stock,
@@ -129,8 +152,6 @@ class Portfolio:
                     "id": self.id,
                     "creds": self.creds
                 })
-
-            # Write the updated data back to the file
             with open(self.creds, 'w') as f:
                 json.dump(data, f, indent=4)
 

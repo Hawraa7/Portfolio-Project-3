@@ -17,7 +17,7 @@ The base of the platform is a digital investment portfolio management system tha
 
 Yfinance provides up-to-date information on stock prices. In this setup, the user use yfinance to get stock price data for buying and selling stocks in his portfolio.
 
-First, the user enters an initial investment amount that will act as starting buying power. This is the cash available to make his first stock purchases.
+First, the user choose one of 3 options: create a portfolio or log in his portfolio or quit the platform. When he choose the first option, he has an id number and password and the program check if the selection is valid. When he choose the second option, he create a portfolio and the program give him an id and password. Next, when the portfolio is create, the user has a liberty to enter an initial investment amount that will act as starting buying power. This is the cash available to make his first stock purchases and he start the investemnt by choosing the different option he has: buyin, selling the stocks, increasing or withdrawing the funds.
 
 The platform offers more options for the user to choose what and how he wants to invest.
 
@@ -26,7 +26,8 @@ The platform offers more options for the user to choose what and how he wants to
 ### Existing Features
 
 - Initial Investment Setup:
-  - The user starts by entering an initial investment amount to create his portfolio.
+  - The user starts by logging in his portfolio or creating one if he has not. 
+  - Next, he enters an initial investment amount.
   - Next, he has more options to invest his amount.
 
 ![Screenshot of the investment](Screenshotinvestment.png)
@@ -74,7 +75,7 @@ I decided to use the portfolio class as my model. This allows users to track the
 
 This model tracks each user’s portfolio, including total account value, buying power (cash available for investment), initial investment amount, and the number of owned stocks.
 
-The platform has methods to help users to manage stock holdings and cash investments interactively, such as a ....print method to print ou the ..........., an ......input method to ........
+The platform has methods to help users to manage stock holdings and cash investments interactively, such as a print method, an input method, a clear_terminal, a get_stock_price, a get_symbol_list, an assign_id, a load_portfolio, a save_update, a buy_stock, a sell_stock, an update_account_value, an increase_investment, and finnaly a withdraw_funds.
 
 ## Testing
 
