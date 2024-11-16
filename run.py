@@ -1,8 +1,7 @@
-import requests
 import json
-import csv
 import yfinance as yf
 import os
+from getch import getch
 
 
 def clear_terminal():
@@ -143,7 +142,8 @@ def main():
     print("Congratulations!! You have successfully created your portfolio!!")
 
     while selection > 0:
-        input("Press any key to continue...")
+        print("Press any key to continue...")
+        getch()
         clear_terminal()
         my_portfolio.print_status()
         print("Which operation would you like to do? Please choose an option by entering the corresponding number:")
