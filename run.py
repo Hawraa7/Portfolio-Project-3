@@ -40,15 +40,24 @@ def get_symbol_list():
         symbol_list = json.load(file)
     return symbol_list
 
+def assign_id():
+    pin = -1
+    return pin
+
+def load_portfolio(pin, password):
+    loaded_portfolio = 1
+    return loaded_portfolio
 
 class Portfolio:
-    def __init__(self, investment):
+    def __init__(self, investment, password, number):
         """ Initializes a Portfolio object with a given investment amount """ 
         self.stock = {}
         self.investment = investment
         self.account_value = investment
         self.buying_power = investment
-        
+        self.password = password
+        self.id = number
+
 
     def buy_stock(self, symbol, number):
         """ 
@@ -135,11 +144,31 @@ def main():
     """ 
     Run all program functions 
     """
+
+    initial_selection = -1
+    print("Welcome to Hawraa Trading Platform.")
+    print("1 - Login an existing account")
+    print("2 - Create a new account")
+    print("0 - Quit")
+    initial_selection = int(input("Please choose one of the two options above: \n"))
+    match selection:
+        case 1:
+            id_number = input("Please enter your account id number: \n")
+            password = input("Please enter a password for your account: \n")
+            my_portfolio = load_portfolio(id_number, password)
+        case 2:
+            initial_investment = float(input("Please enter the amount you want to invest in your portfolio: \n"))
+            password = input("Please enter a password for your account: \n")
+            my_portfolio = Portfolio(initial_investment, password, assign_id())
+            print(f"Congratulations!! You have successfully created your portfolio!!")
+            print(f"Your id on the platform is {my_portfolio.id}. Please save it in a safe place together with your password!!")
+        case 3: 
+            print("Thanks for using our platform!")
+        case _:
+            print("Please select 1, 2 or 0")
+
     selection = 100
     symbol_list = get_symbol_list()
-    initial_investment = float(input("Welcome to Hawraa Trading Platform. Enter the amount you want to invest in your portfolio: \n"))
-    my_portfolio = Portfolio(initial_investment)
-    print("Congratulations!! You have successfully created your portfolio!!")
 
     while selection > 0:
         print("Press any key to continue...")
