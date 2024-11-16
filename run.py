@@ -142,18 +142,18 @@ class Portfolio:
                 user["password"] = self.password
                 user_found = True
                 break
-            if not user_found:
-                data.append({
-                    "stock": self.stock,
-                    "investment": self.investment,
-                    "account_value": self.account_value,
-                    "buying_power": self.buying_power,
-                    "password": self.password,
-                    "id": self.id,
-                    "creds": self.creds
-                })
-            with open(self.creds, 'w') as f:
-                json.dump(data, f, indent=4)
+        if not user_found:
+            data.append({
+                "stock": self.stock,
+                "investment": self.investment,
+                "account_value": self.account_value,
+                "buying_power": self.buying_power,
+                "password": self.password,
+                "id": self.id,
+                "creds": self.creds
+            })
+        with open(self.creds, 'w') as f:
+            json.dump(data, f, indent=4)
 
 
     def buy_stock(self, symbol, number):
