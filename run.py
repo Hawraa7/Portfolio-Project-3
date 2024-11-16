@@ -318,7 +318,7 @@ def main():
         symbol_list = get_symbol_list()
         while selection > 0:
             print("Press any key to continue...")
-            getch()
+            #getch()
             clear_terminal()
             my_portfolio.print_status()
             print("Which operation would you like to do? Please choose an option by entering the corresponding number:")
