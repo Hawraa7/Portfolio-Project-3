@@ -2,6 +2,29 @@ import json
 import yfinance as yf
 import os
 from getch import getch
+import requests
+
+heroku_api_key = "HRKU-436b111a-1949-4eed-bcfa-bde61f477592"
+heroku_app_name = "Portfolio-Project-3"
+
+def update_heroku_config_var(key, value):
+    """
+    Update a Heroku config variable using the Heroku API.
+    """
+    url = f"https://api.heroku.com/apps/{heroku_app_name}/config-vars"
+    headers = {
+        "Authorization": f"Bearer {heroku_api_key}",
+        "Accept": "application/vnd.heroku+json; version=3",
+        "Content-Type": "application/json"
+    }
+    payload = {key: value}
+
+    response = requests.patch(url, headers=headers, json=payload)
+
+    if response.status_code == 200:
+        print(f"Config var '{key}' updated successfully.")
+    else:
+        print(f"Failed to update config var: {response.status_code}, {response.text}")
 
 
 def clear_terminal():
@@ -63,9 +86,8 @@ def save_creds(creds):
     """
     creds_json = json.dumps(creds)
 
-    # Update Heroku's Config Vars (requires Heroku CLI or API)
-    heroku_app_name = "Hawraa7/Portfolio-Project-3"  # Replace with your app's name
-    os.system(f"heroku config:set CREDS_JSON='{creds_json}' --app {heroku_app_name}")
+    # Update Heroku's Config Vars (uses Heroku API)
+    update_heroku_config_var("CREDS_JSON", creds_json)
 
     # Save locally for testing purposes
     with open('creds.json', 'w') as f:
