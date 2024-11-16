@@ -62,16 +62,18 @@ def load_portfolio(pin, password):
             data = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         data = []  # start with an empty list if the file doesn't exist or is invalid
+    
 
     # Check if the user exists and load otherwise return an error message
     for user in data:
         if user["id"] == pin and user["password"] == password:
             # load existing user's data
-            my_portfolio = Portfolio(0, password, pin)
+            my_portfolio = Portfolio(1, password, pin)
             my_portfolio.stock = user["stock"]
             my_portfolio.investment = user["investment"]
             my_portfolio.account_value = user["account_value"]
             my_portfolio.buying_power = user["buying_power"]
+            print("Your account login was successful!!")
             return True, my_portfolio            
     print("User id or password does not match!!")
     return False, []
@@ -91,7 +93,7 @@ class Portfolio:
         self.save_update()
 
 
-    def save_or_update(self):
+    def save_update(self):
             """
             Save the user data or update it if the user already exists.
             """
@@ -148,6 +150,7 @@ class Portfolio:
                 self.stock[symbol] = number
             self.buying_power -= overall_price
             print(f"You have successfully added {number} {symbol} to your portfolio.")
+            self.save_update()
         else:
             print("You do not have enough buying power!") 
     
@@ -166,6 +169,7 @@ class Portfolio:
                 self.buying_power += overall_price
                 self.stock[symbol] -= number
                 print(f"You have successfully sold {number} {symbol} from your portfolio.")
+                self.save_update()
             else: 
                 print(f"You do not have enough number of '{symbol}' stocks to sell")
         else:
@@ -190,6 +194,7 @@ class Portfolio:
         self.investment += amount
         self.buying_power += amount 
         print(f"You have successfully added {amount} to your account.")
+        self.save_update()
     
 
     def withdraw(self, amount):
@@ -201,6 +206,7 @@ class Portfolio:
             self.investment -= amount
             self.buying_power -= amount 
             print(f"You have successfully withdrawn {amount} from your account.")
+            self.save_update()
         else:
             print("You do not have enough liquidity!")
 
@@ -228,8 +234,8 @@ def main():
         flag_selection = True
         match initial_selection:
             case 1:
-                id_number = input("Please enter your account id number: \n")
-                password = input("Please enter a password for your account: \n")
+                id_number = int(input("Please enter your account id number: \n"))
+                password = input("Please enter your account's password: \n")
                 flag_selection, my_portfolio = load_portfolio(id_number, password)
             case 2:
                 initial_investment = float(input("Please enter the amount you want to invest in your portfolio: \n"))
@@ -316,8 +322,3 @@ def main():
                     print("Please select 1, 2, 3, 4, or 0")
             
 main()
-            
-
-
-
-
