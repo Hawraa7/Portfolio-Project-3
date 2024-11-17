@@ -4,30 +4,11 @@ import os
 from getch import getch
 import requests
 
-heroku_api_key = os.getenv('CREDS_API')
-if not heroku_api_key:
+GITHUB_TOKEN = os.getenv('CREDS_GITHUB')
+if not GITHUB_TOKEN:
     with open('creds_API.json', 'r') as f:
-        heroku_api_key = json.load(f)['key']
-heroku_app_name = "portfolio-project-number3"
- 
-def update_heroku_config_var(key, value):
-    """
-    Update a Heroku config variable using the Heroku API.
-    """
-    url = f"https://api.heroku.com/apps/{heroku_app_name}/config-vars"
-    headers = {
-        "Authorization": f"Bearer {heroku_api_key}",
-        "Accept": "application/vnd.heroku+json; version=3",
-        "Content-Type": "application/json"
-    }
-    payload = {key: value}
-
-    response = requests.patch(url, headers=headers, json=payload)
-
-    if response.status_code == 200:
-        print(f"Config var '{key}' updated successfully.")
-    else:
-        print(f"Failed to update config var: {response.status_code}, {response.text}")
+        GITHUB_TOKEN = json.load(f)['key']
+GIST_ID = "b060f951d0cadccba1b601a9ea219f67"
 
 
 def clear_terminal():
@@ -67,19 +48,15 @@ def get_symbol_list():
     return symbol_list
 
 def load_creds():
-    
-    # Load the credentials from an environment variable or fall back to a local creds.json file for development.
-    
-    creds_json = os.getenv('CREDS_JSON')
-
-    if creds_json:
-        creds = json.loads(creds_json)
+    url = f"https://api.github.com/gists/{GIST_ID}"
+    headers = {"Authorization": f"token {GITHUB_TOKEN}"}
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        json_file_url = response.json()["files"]["creds.json"]["raw_url"]
+        creds = requests.get(json_file_url).json()
+        #print("Succeeded to fetch Gist!")
     else:
-        try:
-            with open('creds.json', 'r') as f:
-                creds = json.load(f)
-        except (FileNotFoundError, json.JSONDecodeError):
-            creds = {"clients": []}  # Default structure
+        print("Failed to fetch Gist:", response.status_code)
     return creds
 
 def save_creds(creds):
@@ -88,13 +65,31 @@ def save_creds(creds):
     Converts the dictionary to JSON and updates the CREDS_JSON environment variable.
     """
     creds_json = json.dumps(creds)
+    # Gist API URL
+    url = f"https://api.github.com/gists/{GIST_ID}"
 
-    # Update Heroku's Config Vars (uses Heroku API)
-    update_heroku_config_var("CREDS_JSON", creds_json)
+    # Gist update payload
+    payload = {
+        "files": {
+            "creds.json": {  # Replace with the name of your file in the Gist
+                "content": creds_json
+            }
+        }
+    }
+    # Authorization header
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Content-Type": "application/json"
+    }
 
-    # Save locally for testing purposes
-    #with open('creds.json', 'w') as f:
-    #    json.dump(creds, f, indent=4)
+    # Send PATCH request to update the Gist
+    response = requests.patch(url, headers=headers, json=payload)
+
+    #if response.status_code == 200:
+    #    print("Gist updated successfully!")
+    #else:
+    #    print(f"Failed to update Gist: {response.status_code}")
+    #    print(response.json())
 
 def assign_id():
     """
@@ -314,7 +309,7 @@ def main():
 
     except:
         flag_selection = False
-        print("Selection is invalid!!")
+        print("Error!! Selection is invalid!!")
 
 
     if flag_selection:
