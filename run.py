@@ -4,7 +4,12 @@ import os
 from getch import getch
 import requests
 
-heroku_api_key = "HRKU-436b111a-1949-4eed-bcfa-bde61f477592"
+try:
+    heroku_api_key = os.getenv('CREDS_API')
+except:
+    with open('creds_API.json', 'r') as f:
+        heroku_api_key = json.load(f)["key"]
+
 heroku_app_name = "portfolio-project-number3"
  
 def update_heroku_config_var(key, value):
