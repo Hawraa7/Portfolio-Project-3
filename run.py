@@ -4,12 +4,10 @@ import os
 from getch import getch
 import requests
 
-try:
-    heroku_api_key = os.getenv('CREDS_API')
-except:
+heroku_api_key = os.getenv('CREDS_API')
+if not heroku_api_key:
     with open('creds_API.json', 'r') as f:
-        heroku_api_key = json.load(f)["key"]
-
+        heroku_api_key = json.load(f)['key']
 heroku_app_name = "portfolio-project-number3"
  
 def update_heroku_config_var(key, value):
@@ -292,10 +290,7 @@ def main():
     """
 
     initial_selection = -1
-    print("Welcome to Hawraa's Trading Platform.")
-    print("1 - Login an existing account")
-    print("2 - Create a new account")
-    print("0 - Quit")
+    print("Welcome to Hawraa's Trading Platform.\n1 - Login an existing account\n2 - Create a new account\n0 - Quit")
     try:
         initial_selection = int(input("Please choose one of the three options above: \n"))
         flag_selection = True
@@ -313,6 +308,10 @@ def main():
             case 0: 
                 flag_selection = False
                 print("Thanks for using our platform!")
+            case _:
+                flag_selection = False
+                print("Selection is invalid!!")
+
     except:
         flag_selection = False
         print("Selection is invalid!!")
@@ -323,16 +322,10 @@ def main():
         symbol_list = get_symbol_list()
         while selection > 0:
             print("Press any key to continue...")
-            #getch()
+            getch()
             clear_terminal()
             my_portfolio.print_status()
-            print("Which operation would you like to do? Please choose an option by entering the corresponding number:")
-            print("1 - Buy a stock")
-            print("2 - Sell a stock")
-            print("3 - Increase your investment")
-            print("4 - Withdraw from your account")
-            print("0 - Quit")
-
+            print("Which operation would you like to do? Please choose an option by entering the corresponding number:\n1 - Buy a stock\n2 - Sell a stock\n3 - Increase your investment\n4 - Withdraw from your account\n0 - Quit")
             selection = int(input("\n"))
             match selection:
                 case 1:
