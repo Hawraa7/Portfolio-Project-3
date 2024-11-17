@@ -27,8 +27,8 @@ The platform offers more options for the user to choose what and how he wants to
 
 - Initial Investment Setup:
   - The user starts by logging in his portfolio or creating one if he has not. 
-  - Next, he enters an initial investment amount.
-  - Next, he has more options to invest his amount.
+  - Next, he enters an initial investment amount and a password in case he chose to create a new account.
+  - Then, he has more options to invest in his portfolio.
 
 ![Screenshot of the investment](Screenshotinvestment.png)
 - Option 1 : Buying Stocks
@@ -75,7 +75,7 @@ I decided to use the portfolio class as my model. This allows users to track the
 
 This model tracks each user’s portfolio, including total account value, buying power (cash available for investment), initial investment amount, and the number of owned stocks.
 
-The platform has methods to help users to manage stock holdings and cash investments interactively, such as a print method, an input method, a clear_terminal, a get_stock_price, a get_symbol_list, an assign_id, a load_portfolio, a save_update, a buy_stock, a sell_stock, an update_account_value, an increase_investment, and finnaly a withdraw_funds.
+The platform has methods to help users to manage stock holdings and cash investments interactively, such as a print method, an input method, a clear_terminal method, a get_stock_price method, a get_symbol_list method, an assign_id method, a load_portfolio method, a save_update method, a buy_stock method, a sell_stock method, an update_account_value method, an increase_investment method, and finally a withdraw_funds method.
 
 ## Testing
 
@@ -97,6 +97,8 @@ I have manually tested this project by doing the following:
 
 - Getting the current stock price and the list of available stocks was done initially using the [Alpha Vantage](https://www.alphavantage.co/) API. However the access there is limited in the free edition to 25 requests per day which is quite restrictive since an error directly appears after 25 requests asking me to buy the premium edition for a quasi-continuous number of requests. I found then an alternative solution by using the yahoo finance API to get the current price of a stock. Although unlike the case when using the Alpha Vantage API, the price is not a real-time price since it has a delay of up to 15 minutes but it is free and sufficient to use in my Portfolio project. As for the list of current stocks symbols in the market I got them from wikipedia and saved them in the file *"stock_list.txt"*.
 
+- The Heroku application crushed when I tried to use the Heroku's API in order to edit the creds.json file stored in it. And the performance was not reliable, so I had to switch to Github's API that allows the access and editing of the creds.json file stored as a Gist in my Github's account.
+
 ### Remaining Bugs
 
 - No bugs remaining
@@ -117,7 +119,8 @@ This project was deployed using Code Institute's mock terminal for Heroku.
    - Create a new Heroku app
    - Set the buildbacks to *Python* and *NodeJS* in that order
    - Link the Heroku app to the repository
-   - click on Deploy Branch
+   - Create a *CREDS_GITHUB* variable that stores the API key to access the *creds.json* file stored as a Gist in the Github account hosting the project. This is essential in order to limit the access only to the administrator who is managing the accounts on *Hawraa's trading platform*.
+   - Click on Deploy Branch
 
    ## Credits
 

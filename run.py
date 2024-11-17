@@ -10,7 +10,6 @@ if not GITHUB_TOKEN:
         GITHUB_TOKEN = json.load(f)['key']
 GIST_ID = "b060f951d0cadccba1b601a9ea219f67"
 
-
 def clear_terminal():
     """
     Clear the terminal screen based on the operating system,
@@ -21,7 +20,6 @@ def clear_terminal():
         os.system('cls')
     else:
         os.system('clear')
-
 
 def get_stock_price(symbol):
     """  
@@ -35,7 +33,6 @@ def get_stock_price(symbol):
     stock_price = stock.history(period="1d")['Close'].iloc[0]
     return stock_price
    
-
 def get_symbol_list():
     """ 
     Retrieve a list of stock symbols from a local file,
