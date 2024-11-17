@@ -51,42 +51,33 @@ def load_creds():
     if response.status_code == 200:
         json_file_url = response.json()["files"]["creds.json"]["raw_url"]
         creds = requests.get(json_file_url).json()
-        #print("Succeeded to fetch Gist!")
     else:
         print("Failed to fetch Gist:", response.status_code)
     return creds
 
 def save_creds(creds):
     """
-    Save updated credentials to the environment variable.
-    Converts the dictionary to JSON and updates the CREDS_JSON environment variable.
+    Save updated credentials to the environment variable,
+    Converts the dictionary to JSON and updates the CREDS_JSON environment variable,
+    Gist API URL,
+    Gist update payload,
+    Authorization header,
+    Send PATCH request to update the Gist.
     """
     creds_json = json.dumps(creds)
-    # Gist API URL
     url = f"https://api.github.com/gists/{GIST_ID}"
-
-    # Gist update payload
     payload = {
         "files": {
-            "creds.json": {  # Replace with the name of your file in the Gist
+            "creds.json": {
                 "content": creds_json
             }
         }
     }
-    # Authorization header
     headers = {
         "Authorization": f"token {GITHUB_TOKEN}",
         "Content-Type": "application/json"
     }
-
-    # Send PATCH request to update the Gist
     response = requests.patch(url, headers=headers, json=payload)
-
-    #if response.status_code == 200:
-    #    print("Gist updated successfully!")
-    #else:
-    #    print(f"Failed to update Gist: {response.status_code}")
-    #    print(response.json())
 
 def assign_id():
     """
