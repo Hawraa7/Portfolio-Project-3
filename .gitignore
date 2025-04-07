@@ -8,3 +8,5 @@ node_modules/
 .github/
 creds.json
 creds_API.json
+.venv
+.env

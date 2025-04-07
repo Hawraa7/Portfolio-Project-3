@@ -7,8 +7,10 @@ import requests
 GITHUB_TOKEN = os.getenv('CREDS_GITHUB')
 if not GITHUB_TOKEN:
     with open('creds_API.json', 'r') as f:
-        GITHUB_TOKEN = json.load(f)['key']
-GIST_ID = "b060f951d0cadccba1b601a9ea219f67"
+        content = f.read().strip()
+        creds = json.loads(content)
+        GITHUB_TOKEN = creds.get('key')
+        GIST_ID = creds.get('GIST_ID')
 
 def clear_terminal():
     """
@@ -271,97 +273,108 @@ def main():
     """ 
     Run all program functions 
     """
+    while True:
+        clear_terminal()
+        initial_selection = -1
+        print("Welcome to Hawraa's Trading Platform.\n1 - Login an existing account\n2 - Create a new account")
+        try:
+            initial_selection = int(input("Please choose one of the two options above: \n"))
+            flag_selection = True
+            match initial_selection:
+                case 1:
+                    id_number = int(input("Please enter your account id number: \n"))
+                    password = input("Please enter your account's password: \n")
+                    flag_selection, my_portfolio = load_portfolio(id_number, password)
+                case 2:
+                    initial_investment = float(input("Please enter the amount you want to invest in your portfolio: \n"))
+                    password = input("Please enter a password for your account: \n")
+                    my_portfolio = Portfolio(initial_investment, password, assign_id())
+                    print(f"Congratulations!! You have successfully created your portfolio!!")
+                    print(f"Your id on the platform is {my_portfolio.id}. Please save it in a safe place together with your password!!")
+                case _:
+                    flag_selection = False
+                    print("Selection is invalid!! Please select one of the following options only: 1 or 2!")
+                    print("Press any key to continue...")
+                    getch()
+                    
 
-    initial_selection = -1
-    print("Welcome to Hawraa's Trading Platform.\n1 - Login an existing account\n2 - Create a new account\n0 - Quit")
-    try:
-        initial_selection = int(input("Please choose one of the three options above: \n"))
-        flag_selection = True
-        match initial_selection:
-            case 1:
-                id_number = int(input("Please enter your account id number: \n"))
-                password = input("Please enter your account's password: \n")
-                flag_selection, my_portfolio = load_portfolio(id_number, password)
-            case 2:
-                initial_investment = float(input("Please enter the amount you want to invest in your portfolio: \n"))
-                password = input("Please enter a password for your account: \n")
-                my_portfolio = Portfolio(initial_investment, password, assign_id())
-                print(f"Congratulations!! You have successfully created your portfolio!!")
-                print(f"Your id on the platform is {my_portfolio.id}. Please save it in a safe place together with your password!!")
-            case 0: 
-                flag_selection = False
-                print("Thanks for using our platform!")
-            case _:
-                flag_selection = False
-                print("Selection is invalid!!")
-
-    except:
-        flag_selection = False
-        print("Error!! Selection is invalid!!")
-
-
-    if flag_selection:
-        selection = 100
-        symbol_list = get_symbol_list()
-        while selection > 0:
+        except:
+            flag_selection = False
+            print("Error!! Selection is invalid!! Please select one of the following options only: 1 or 2!")
             print("Press any key to continue...")
             getch()
-            clear_terminal()
-            my_portfolio.print_status()
-            print("Which operation would you like to do? Please choose an option by entering the corresponding number:\n1 - Buy a stock\n2 - Sell a stock\n3 - Increase your investment\n4 - Withdraw from your account\n0 - Quit")
-            selection = int(input("\n"))
-            match selection:
-                case 1:
-                    symbol = input("Enter the stock name: \n")
-                    if symbol in symbol_list:
-                        number = input(f"Enter the number of stock {symbol} you want to buy: \n")
-                        try:
-                            number = float(number)
-                            if number > 0:
-                                my_portfolio.buy_stock(symbol, number)
+
+
+        if flag_selection:
+            selection = 100
+            symbol_list = get_symbol_list()
+            errorN = True
+            while errorN:
+                print("Press any key to continue...")
+                getch()
+                clear_terminal()
+                my_portfolio.print_status()
+                print("Which operation would you like to do? Please choose an option by entering the corresponding number:\n1 - Buy a stock\n2 - Sell a stock\n3 - Increase your investment\n4 - Withdraw from your account\n0 - Quit")
+                try:
+                    selection = int(input("\n"))
+                    match selection:
+                        case 1:
+                            symbol = input("Enter the stock name: \n(ex: APPL for Apple, NVDA for NVIDEA, MSFT for Microsoft Corp, or any NASDAQ stock symbol from https://www.nasdaq.com/market-activity/stocks/screener)\n")
+                            if symbol in symbol_list:
+                                number = input(f"Enter the number of stock {symbol} you want to buy: \n")
+                                try:
+                                    number = float(number)
+                                    if number > 0:
+                                        my_portfolio.buy_stock(symbol, number)
+                                    else:
+                                        print("The number you entered needs to be greater than zero!")
+                                except:
+                                    print("The value you entered is invalid!")
                             else:
-                                print("The number you entered needs to be greater than zero!")
-                        except:
-                            print("The value you entered is invalid!")
-                    else:
-                        print("The symbol you entered is invalid!")
-                case 2:
-                    symbol = input("Enter the stock name: \n")
-                    if symbol in symbol_list:
-                        number = input(f"Enter the number of stock {symbol} you want to sell: \n")
-                        try:
-                            number = float(number)
-                            if number > 0:
-                                my_portfolio.sell_stock(symbol, number)
-                            else: 
-                                print("The number you entered needs to be greater than zero!")
-                        except:
-                            print("The value you entered is invalid!")
-                    else:
-                        print("The symbol you entered is invalid!")
-                case 3:
-                    number = input("How much you want to increase your investment? \n")
-                    try:
-                        number = float(number)
-                        if number > 0:
-                            my_portfolio.increase_investment(number)
-                        else: 
-                            print("The number you entered needs to be greater than zero!")
-                    except:
-                        print("The value you entered is invalid!")
-                case 4:
-                    number = input("Enter the number you want to withdraw from your account: \n")
-                    try:
-                        number = float(number)
-                        if number > 0:
-                            my_portfolio.withdraw(number)
-                        else:
-                            print("The number you entered needs to be greater than zero!")
-                    except:
-                        print("The value you entered is invalid!")
-                case 0:
-                    print("Thanks for using our platform!")
-                case _:
-                    print("Please select 1, 2, 3, 4, or 0")
+                                print("The symbol you entered is invalid!")
+                        case 2:
+                            symbol = input("Enter the stock name: \n")
+                            if symbol in symbol_list:
+                                number = input(f"Enter the number of stock {symbol} you want to sell: \n")
+                                try:
+                                    number = float(number)
+                                    if number > 0:
+                                        my_portfolio.sell_stock(symbol, number)
+                                    else: 
+                                        print("The number you entered needs to be greater than zero!")
+                                except:
+                                    print("The value you entered is invalid!")
+                            else:
+                                print("The symbol you entered is invalid!")
+                        case 3:
+                            number = input("How much you want to increase your investment? \n")
+                            try:
+                                number = float(number)
+                                if number > 0:
+                                    my_portfolio.increase_investment(number)
+                                else: 
+                                    print("The number you entered needs to be greater than zero!")
+                            except:
+                                print("The value you entered is invalid!")
+                        case 4:
+                            number = input("Enter the number you want to withdraw from your account: \n")
+                            try:
+                                number = float(number)
+                                if number > 0:
+                                    my_portfolio.withdraw(number)
+                                else:
+                                    print("The number you entered needs to be greater than zero!")
+                            except:
+                                print("The value you entered is invalid!")
+                        case 0:
+                            errorN = False
+                            print("Thanks for using our platform!")
+                            print("Press any key to continue...")
+                            getch()
+                        case _:
+                            print("Please select 1, 2, 3, 4, or 0")
+                except:
+                    print("Error!! Selection is invalid!! Please select one of the following options only: 1, 2, 3, 4, or 0!")
+
             
 main()

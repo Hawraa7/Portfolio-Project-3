@@ -1,3 +1,4 @@
 yfinance
 getch
 requests
+python-dotenv
