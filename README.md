@@ -5,7 +5,7 @@ The platform is typically designed to facilitate a range of investment activitie
 
 In my project, which runs in the Code Institute mock terminal on Heroku, the platform enables users to interactively manage a stock portfolio, simulating trading activities like buying, selling, depositing, and withdrawing funds, all while maintaining an up-to-date portfolio value.
 
-In this Project-Portfolio, the Platform offers tools to manage and track the investment, showing gains, losses, and asset allocation.
+In this Portfolio-Project, the Platform offers tools to manage and track the investment, showing gains, losses, and asset allocation.
 
 Here is the live version of my project.
 
@@ -15,9 +15,9 @@ Here is the live version of my project.
 
 The base of the platform is a digital investment portfolio management system that allows users to manage stock holdings and cash investments interactively. The yfinance library is a powerful tool that allows the user to access stock market data for a variety of companies in real time, making it useful for tracking and trading stocks. 
 
-Yfinance provides up-to-date information on stock prices. In this setup, the user use yfinance to get stock price data for buying and selling stocks in his portfolio.
+Yfinance provides up-to-date information on stock prices. In this setup, the user use Yfinance to get stock price data for buying and selling stocks in his portfolio.
 
-First, the user choose one of 3 options: create a portfolio or log in his portfolio or quit the platform. When he choose the first option, he has an id number and password and the program check if the selection is valid. When he choose the second option, he create a portfolio and the program give him an id and password. Next, when the portfolio is create, the user has a liberty to enter an initial investment amount that will act as starting buying power. This is the cash available to make his first stock purchases and he start the investemnt by choosing the different option he has: buyin, selling the stocks, increasing or withdrawing the funds.
+First, the user choose one of 3 options: create a portfolio or log in his portfolio or quit the platform. When he choose the first option, he has an id number and password and the program check if the selection is valid. When he choose the second option, he create a portfolio and the program give him an id and password. Next, when the portfolio is create, the user has a liberty to enter an initial investment amount that will act as starting buying power. This is the cash available to make his first stock purchases and he start the investemnt by choosing the different option he has: buying, selling the stocks, increasing or withdrawing the funds.
 
 The platform offers more options for the user to choose what and how he wants to invest.
 
@@ -67,25 +67,122 @@ The platform offers more options for the user to choose what and how he wants to
 
 - Allow users to test their algorithms against historical data to evaluate potential performance.
 
-- Allow user to control over data storage using decentralized systems to enhance privacy and security.
+- Allow users to control over data storage using decentralized systems to enhance privacy and security.
 
 ## Portfolio Model
 
-I decided to use the portfolio class as my model. This allows users to track their investment progress, make informed decisions, and adjust their investment strategy in real-time.
+At the heart of the platform lies the Portfolio class, which acts as the core model for managing each user's investment activity. This class was chosen to encapsulate all essential elements of a user's financial profile within the system, enabling real-time tracking, management, and decision-making. By centralizing the portfolio logic in a dedicated class, the platform ensures a clean, scalable, and organized architecture.
 
-This model tracks each user’s portfolio, including total account value, buying power (cash available for investment), initial investment amount, and the number of owned stocks.
+The Portfolio class is designed to:
 
-The platform has methods to help users to manage stock holdings and cash investments interactively, such as a print method, an input method, a clear_terminal method, a get_stock_price method, a get_symbol_list method, an assign_id method, a load_portfolio method, a save_update method, a buy_stock method, a sell_stock method, an update_account_value method, an increase_investment method, and finally a withdraw_funds method.
+- Track a user's investment progress over time.
+
+- Maintain accurate financial records including cash balance and stock holdings.
+
+- Support dynamic interactions, such as buying, selling, and updating investment data.
+
+- Help users make informed decisions through real-time updates and accessible metrics.
+
+Also, the Portfolio class is packed with intuitive methods that allow users to interactively manage their investments:
+
+- print( ): Outputs the current state of the portfolio including stock holdings, cash balance, and account value.
+
+- input( ): captures and validates user input for actions such as buying or selling stocks.
+
+- clear_terminal( ): clears the console screen for a cleaner user interface experience.
+
+- get_stock_price(ticker): fetches the latest stock price for the specified ticker symbol using the yfinance API.
+
+- get_symbol_list( ): returns a list of available or commonly traded stock ticker symbols for user reference.
+
+- assign_id( ): automatically generates a unique ID for new users when creating a portfolio.
+
+- load_portfolio(id, password): retrieves and loads an existing portfolio from storage based on the user’s credentials.
+
+- save_update( ): saves changes to the user's portfolio after any transaction or update, ensuring persistence.
+
+- buy_stock(ticker, quantity): executes a buy order if the user has enough funds, updates the owned stocks and deducts the cost from buying power.
+
+- sell_stock(ticker, quantity): processes a sell order, removes the appropriate quantity of shares, and credits the sale proceeds to the user's cash balance.
+
+- update_account_value( ): recalculates the total portfolio value based on the latest stock prices and cash available.
+
+- increase_investment(amount): allows users to add more funds to their account, increasing their buying power.
+
+- withdraw_funds(amount): enables users to withdraw money from their portfolio if sufficient funds are available.
+
 
 ## Testing
-
-I have manually tested this project by doing the following:
-
-- Passed the code through a PEP8 Python Validator and confirmed there are no problems.
-
-- Given invalid inputs: strings when numbers are expected, out of bounds inputs, same input twice.
-
 - Tested in my local terminal and the Code Institute Heroku terminal.
+### Code Validation 
+#### Google lighthouse Validation
+
+To ensure that the platform’s frontend performs optimally, we used Google Lighthouse—an open-source, automated tool for improving the quality of web pages. The tool provides insights into various performance metrics, accessibility, best practices, and SEO.
+
+Testing was conducted in private browsing mode to eliminate any cached data or session interference, ensuring accurate results.
+
+Lighthouse Testing Process:
+
+- Open the platform in Google Chrome.
+
+- Open the DevTools panel (F12 or Ctrl + Shift + I).
+
+- Go to the Lighthouse tab.
+
+- Run the audit with the settings set to Performance, Accessibility, Best Practices, and SEO.
+
+- Analyze the generated report.
+
+Key Metrics Tested:
+
+- Performance: Measures how quickly the page loads and becomes interactive.
+
+- Accessibility: Assesses whether the platform is accessible to all users, including those with disabilities.
+
+- Best Practices: Checks for security and code quality issues.
+
+- SEO: Ensures the platform is search engine-friendly.
+
+Results:
+
+- The platform scored high in Performance (with a focus on time to interactive and load speed).
+
+- Accessibility issues were minimal, with recommendations for improving text contrast and ensuring ARIA labels are correctly used.
+
+- Best practices were followed, with no major issues.
+
+- SEO scores were also good, ensuring the platform's content is discoverable by search engines.
+
+![Screenshot of performance test ](Screenshotofperformance.png)
+
+#### PEP8 Code Institute Python Linter Validation
+
+To maintain high-quality, readable, and standardized Python code, the platform's Python files were validated using the PEP8 Python style guide via the Code Institute Python Linter.[PEP8](https://pep8ci.herokuapp.com/) validator.
+
+PEP8 Validation Process:
+
+- The Python code was passed through the Code Institute’s PEP8 linter: PEP8 Linter.
+
+- The linter analyzed the code for style violations and potential errors based on the official PEP8 guidelines.
+
+- Any issues, such as indentation problems, line length, or improper naming conventions, were corrected.
+
+Key Checks:
+
+- Indentation: Ensured consistent use of spaces (4 spaces per indentation level).
+
+- Line Length: Verified no lines exceed the 79-character limit, as recommended by PEP8.
+
+- Whitespace: Checked for proper whitespace usage around operators, commas, and functions.
+
+- Naming Conventions: Ensured variable and function names follow the snake_case style.
+
+Results:
+
+- The code passed all PEP8 style checks with no significant issues.
+
+![Screenshot of validation in PEP8](Screenshotofvalidationinpep8.png)
+
 
 ### Bugs
 
@@ -103,13 +200,7 @@ I have manually tested this project by doing the following:
 
 - No bugs remaining
 
-### Validator Testing
-
-- PEP8
-
-  - No errors were returned from [PEP8online.com](https://pep8ci.herokuapp.com/)
-
-  ## Deployment
+## Deployment
 
 This project was deployed using Code Institute's mock terminal for Heroku.
 
@@ -122,14 +213,21 @@ This project was deployed using Code Institute's mock terminal for Heroku.
    - Create a *CREDS_GITHUB* variable that stores the API key to access the *creds.json* file stored as a Gist in the Github account hosting the project. This is essential in order to limit the access only to the administrator who is managing the accounts on *Hawraa's trading platform*.
    - Click on Deploy Branch
 
-   ## Credits
+   ![Screenshot of deploy](Screenshotofdeploy.png)
 
-- Code Institute for the deployment terminal
-- Yahoo finance library (yfinance) for getting real-time prices of stocks
-- Wikipedia for getting the list of symbols for all the stocks 
+## Content
 
+- Yahoo finance library (yfinance) for getting real-time prices of stocks.
+- Wikipedia for getting the list of symbols for all the stocks.
 
+## Credits
 
+Would like to say thanks to all for the support throughout the project.
+
+- [Code Institute](https://codeinstitute.net/global/) for all the support and knowledge.
+- [Slack community](https://slack.com/intl/en-ie/) tech-humour channel where I got the inspiration for this project and some feedback. My cohort channel for all the support and feedback.
+- My mentor Diego Pupato who's continuously very supportive of me and very knowledgeable.
+- I would also like to thank or say sorry to my family. I'm not too sure they have seen me much these past weeks.
 
 
 
