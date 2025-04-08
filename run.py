@@ -1,8 +1,19 @@
 import json
 import yfinance as yf
 import os
-import msvcrt
 import requests
+import sys
+
+if sys.platform.startswith('win'):
+    import msvcrt
+
+    def get_key():
+        return msvcrt.getch()
+else:
+    import getch
+
+    def get_key():
+        return getch.getch()
 
 with open('creds_API.json', 'r') as f:
     content = f.read().strip()
@@ -140,7 +151,6 @@ def load_portfolio(pin, password):
             my_portfolio.save_update()
             print("Your account login was successful!!")
             return True, my_portfolio
-    print("User id or password does not match!!")
     return False, []
 
 
@@ -321,35 +331,45 @@ def main():
                         "Please enter your account's password: \n")
                     flag_selection, my_portfolio = load_portfolio(id_number,
                                                                   password)
+                    if not flag_selection:
+                        print("Invalid ID number or password. "
+                              "Please try again.")
+                        print("Press any key to continue...")
+                        get_key()
                 case 2:
                     initial_investment = float(input(
-                        "Please enter the amount you want to invest in your "
-                        "portfolio: \n"))
-                    password = input(
-                        "Please enter a password for your account: \n")
-                    my_portfolio = Portfolio(initial_investment, password,
-                                             assign_id())
-                    print(
-                        f"Congratulations!! You have successfully created "
-                        f"your portfolio!!")
-                    print(f"Your id on the platform is {my_portfolio.id}."
-                          f"Please save it in a safe place together with your"
-                          f"password!!")
+                        "Please enter the amount you want to invest in your"
+                        " portfolio: \n"))
+                    if initial_investment <= 0:
+                        print("❌ Please enter a positive amount.")
+                        print("Press any key to continue...")
+                        get_key()
+                        flag_selection = False
+                    else:
+                        password = input(
+                            "Please enter a password: \n")
+                        my_portfolio = Portfolio(initial_investment,
+                                                 password, assign_id())
+                        print(
+                            f"Congratulations!! You have successfully created"
+                            f"your portfolio!!")
+                        print(f"Your id on the platform is {my_portfolio.id}."
+                              f"Please save it in a safe place together with"
+                              f" your password!!")
                 case _:
                     flag_selection = False
                     print(
                         "Selection is invalid!! Please select one of the "
                         "following options only: 1 or 2!")
                     print("Press any key to continue...")
-                    msvcrt.getch()
+                    get_key()
 
         except ValueError:
             flag_selection = False
             print(
-                "Error!! Selection is invalid!! Please select one of the "
-                "following options only: 1 or 2!")
+                "Error!! Selection is invalid!!")
             print("Press any key to continue...")
-            msvcrt.getch()
+            get_key()
 
         if flag_selection:
             selection = 100
@@ -357,7 +377,7 @@ def main():
             errorN = True
             while errorN:
                 print("Press any key to continue...")
-                msvcrt.getch()
+                get_key()
                 clear_terminal()
                 my_portfolio.print_status()
                 print(
@@ -446,7 +466,7 @@ def main():
                             errorN = False
                             print("Thanks for using our platform!")
                             print("Press any key to continue...")
-                            msvcrt.getch()
+                            get_key()
                         case _:
                             print("Please select 1, 2, 3, 4, or 0")
                 except ValueError:
