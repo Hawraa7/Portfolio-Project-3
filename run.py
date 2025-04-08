@@ -8,7 +8,8 @@ try:
     GITHUB_TOKEN = env.key
     GIST_ID = env.GIST_ID
 except ImportError:
-    pass
+    GITHUB_TOKEN = os.getenv("key")
+    GIST_ID = os.getenv("GIST_ID")
 
 
 if sys.platform.startswith('win'):
