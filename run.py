@@ -3,6 +3,13 @@ import yfinance as yf
 import os
 import requests
 import sys
+try:
+    import env  # only exists locally
+    GITHUB_TOKEN = env.key
+    GIST_ID = env.GIST_ID
+except ImportError:
+    pass
+
 
 if sys.platform.startswith('win'):
     import msvcrt
@@ -14,12 +21,6 @@ else:
 
     def get_key():
         return getch.getch()
-
-with open('creds_API.json', 'r') as f:
-    content = f.read().strip()
-    creds = json.loads(content)
-    GITHUB_TOKEN = creds.get('key')
-    GIST_ID = creds.get('GIST_ID')
 
 
 def clear_terminal():
