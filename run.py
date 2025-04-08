@@ -8,7 +8,7 @@ try:
     GITHUB_TOKEN = env.key
     GIST_ID = env.GIST_ID
 except ImportError:
-    GITHUB_TOKEN = os.getenv("key")
+    GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
     GIST_ID = os.getenv("GIST_ID")
 
 
