@@ -238,28 +238,18 @@ First, clone the repository from GitHub to your local machine:
 git clone https://github.com/your-username/your-repo-name.git
 cd your-repo-name
 
-2️⃣ Create a Virtual Environment & Install Requirements
-It's recommended to use a virtual environment:
+1️⃣ Create a Virtual Environment
+<pre><code class="language-bash"> # Create virtual environment python3 -m venv .venv # or 'python -m venv .venv' # Activate it source .venv/bin/activate # macOS/Linux .venv\Scripts\activate # Windows </code></pre>
+2️⃣ Install Dependencies
+<pre><code class="language-bash"> pip install -r requirements.txt </code></pre>
+3️⃣ Set Environment Variables
+Create a file named env.py in the root directory with:
 
-python3 -m venv .venv       # or 'python -m venv .venv' depending on your setup
-source .venv/bin/activate   # On Windows use: .venv\Scripts\activate
-Then install the required packages:
+<pre><code class="language-python"> GIST_ID = "your_gist_id_here" GITHUB_TOKEN = "your_github_token_here" </code></pre>
+⚠️ Don’t commit env.py to your repo! Add it to .gitignore.
 
-pip install -r requirements.txt
-3️⃣ Set Up Environment Variables
-Create a file named env.py in the root directory of the project and add the following content:
-
-GIST_ID = "your_gist_id_here"
-GITHUB_TOKEN = "your_github_token_here"
-🛡️ Make sure not to commit env.py to version control if it contains sensitive data.
-
-4️⃣ Run the Application
-Finally, run the Python script:
-
-python3 run.py     # for macOS/Linux
-or
-
-python run.py      # for Windows
+4️⃣ Run the Code
+<pre><code class="language-bash"> python3 run.py # macOS/Linux python run.py # Windows </code></pre>
 
 
 ## Credits
