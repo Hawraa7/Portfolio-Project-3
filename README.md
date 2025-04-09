@@ -17,7 +17,7 @@ The base of the platform is a digital investment portfolio management system tha
 
 Yfinance provides up-to-date information on stock prices. In this setup, the user use Yfinance to get stock price data for buying and selling stocks in his portfolio.
 
-First, the user choose one of 3 options: create a portfolio or log in his portfolio or quit the platform. When he choose the first option, he has an id number and password and the program check if the selection is valid. When he choose the second option, he create a portfolio and the program give him an id and password. Next, when the portfolio is create, the user has a liberty to enter an initial investment amount that will act as starting buying power. This is the cash available to make his first stock purchases and he start the investemnt by choosing the different option he has: buying, selling the stocks, increasing or withdrawing the funds.
+First, the user choose one of 2 options: create a portfolio or log in his portfolio. When he chooses the first option, he has an id number and password and the program check if the selection is valid. When he choose the second option, he create a portfolio and the program give him an id and password. Next, when the portfolio is created, the user has a liberty to enter an initial investment amount that will act as starting buying power. This is the cash available to make his first stock purchases and he start the investemnt by choosing the different option he has: buying, selling the stocks, increasing or withdrawing the funds.
 
 The platform offers more options for the user to choose what and how he wants to invest.
 
@@ -43,7 +43,7 @@ The platform offers more options for the user to choose what and how he wants to
 ![Screenshot of selling stocks](Screenshotselling.png)
 - Stock Symbol Verification
 
-  - When buying or selling stocks, the platform checks if the entered stock symbol is valid by consulting a list of stock symbols from an external data source.
+  - When buying or selling stocks, the platform checks if the entered stock symbol is valid by consulting a list of stock symbols from an external data source. We note that the complete set of stock symbols are stored in the file stock_list.txt
 
 - Option 3: Increasing Investment
 
@@ -56,11 +56,16 @@ The platform offers more options for the user to choose what and how he wants to
 - Account Status Check:
 
   - Users can check their portfolio's current status, which includes:
-    - Buying Power: The cash available to buy or sell more stocks.
+    - Buying Power: The cash available to buy more stocks.
     - Account Value: The total value of the portfolio, including both cash and stocks (using current stock prices from the yfinance library).
     - Investment: The initial invested amount plus any additional funds added.
     - Stock Holdings: A list of the stocks in the portfolio, including symbols and quantities.
 ![Screenshot of the portfolio's status](Screenshotportfoliostatus.png)
+- The investor can clearly determine the profit or loss:
+
+  - If the account value exceeds the investment by x, the profit is x.
+
+  - If the investment exceeds the account value by y, the loss is y.
 ### Future Features
 
 - Allow users to collaborate on investments, share insights, and collectively analyze market trends.
@@ -215,10 +220,47 @@ This project was deployed using Code Institute's mock terminal for Heroku.
 
    ![Screenshot of deploy](Screenshotofdeploy.png)
 
-## Content
+## Content and tools used
 
 - Yahoo finance library (yfinance) for getting real-time prices of stocks.
 - Wikipedia for getting the list of symbols for all the stocks.
+- Github Gist to store all Users portfolios. We access the data stored in the Gist through an API using a GIST_ID stored as a configuation variable in Heroku and locally in an env.py file together with the GITHUB_TOKEN. In case two Portfolios are stored in the Gist, the file stored therein has the following json format:
+
+[{"stock": {"AAPL": 10.0, "BRK-B": 1.0, "NVR": 2.0, "VST": 9.0, "AMD": 5.0, "UBER": 10.0, "MSTR": 3.0, "NVDA": 4.0, "AIT": 10.0, "AVGO": 40.0}, "investment": 47000.0, "account_value": 40713.67998504639, "buying_power": 13734.830032348633, "password": "lolo", "id": 1, "creds": "creds.json"}, {"stock": {"AVGO": 1.0, "LLY": 2.0}, "investment": 3000.0, "account_value": 3000.0, "buying_power": 1342.7599792480469, "password": "bobo", "id": 2, "creds": "creds.json"}]
+
+## Running the code from Github
+🚀 How to Run This Project
+Follow these steps to get the project running locally:
+
+1️⃣ Clone the Repository
+First, clone the repository from GitHub to your local machine:
+
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+
+2️⃣ Create a Virtual Environment & Install Requirements
+It's recommended to use a virtual environment:
+
+python3 -m venv .venv       # or 'python -m venv .venv' depending on your setup
+source .venv/bin/activate   # On Windows use: .venv\Scripts\activate
+Then install the required packages:
+
+pip install -r requirements.txt
+3️⃣ Set Up Environment Variables
+Create a file named env.py in the root directory of the project and add the following content:
+
+GIST_ID = "your_gist_id_here"
+GITHUB_TOKEN = "your_github_token_here"
+🛡️ Make sure not to commit env.py to version control if it contains sensitive data.
+
+4️⃣ Run the Application
+Finally, run the Python script:
+
+python3 run.py     # for macOS/Linux
+or
+
+python run.py      # for Windows
+
 
 ## Credits
 
