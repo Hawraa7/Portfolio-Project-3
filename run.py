@@ -3,6 +3,14 @@ import yfinance as yf
 import os
 import requests
 import sys
+try:
+    import env  # only exists locally
+    GITHUB_TOKEN = env.key
+    GIST_ID = env.GIST_ID
+except ImportError:
+    GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+    GIST_ID = os.getenv("GIST_ID")
+
 
 if sys.platform.startswith('win'):
     import msvcrt
@@ -14,12 +22,6 @@ else:
 
     def get_key():
         return getch.getch()
-
-with open('creds_API.json', 'r') as f:
-    content = f.read().strip()
-    creds = json.loads(content)
-    GITHUB_TOKEN = creds.get('key')
-    GIST_ID = creds.get('GIST_ID')
 
 
 def clear_terminal():
@@ -396,7 +398,7 @@ def main():
                              "Enter the stock name:\n"
                              "(ex: AAPL for Apple, NVDA for NVIDIA,\n"
                              "MSFT for Microsoft Corp, or any NASDAQ stock"
-                             "symbol from\n"
+                             " symbol from\n"
                              "https://www.nasdaq.com/market-activity/stocks/"
                              "screener)\n")
 
@@ -428,7 +430,7 @@ def main():
                                         my_portfolio.sell_stock(symbol, number)
                                     else:
                                         print(
-                                            "The number you entered needs to"
+                                            "The number you entered needs to "
                                             "be greater than zero!")
                                 except ValueError:
                                     print("The value you entered is invalid!")

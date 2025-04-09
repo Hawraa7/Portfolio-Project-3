@@ -6,7 +6,6 @@ __pycache__/
 *.py[cod]
 node_modules/
 .github/
-creds.json
-creds_API.json
 .venv
-.env
+env.py
+creds_API.json
