@@ -248,7 +248,7 @@ First, clone the repository from GitHub to your local machine:
 Create a file named env.py in the root directory with:
 
 <pre><code class="language-python"> GIST_ID = "your_gist_id_here" # since GIST_ID is a secret info it is not provided here
- GITHUB_TOKEN = "your_github_token_here" # since GITHUB_TOKEN is a secret info it is not provided here</code></pre>
+ key = "your_github_token_here" # since GITHUB_TOKEN is a secret info it is not provided here</code></pre>
 ⚠️ Don’t commit env.py to your repo! Add it to .gitignore.
 
 4️⃣ Run the Code
