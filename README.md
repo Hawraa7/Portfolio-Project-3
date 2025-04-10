@@ -228,28 +228,32 @@ This project was deployed using Code Institute's mock terminal for Heroku.
 
 [{"stock": {"AAPL": 10.0, "BRK-B": 1.0, "NVR": 2.0, "VST": 9.0, "AMD": 5.0, "UBER": 10.0, "MSTR": 3.0, "NVDA": 4.0, "AIT": 10.0, "AVGO": 40.0}, "investment": 47000.0, "account_value": 40713.67998504639, "buying_power": 13734.830032348633, "password": "lolo", "id": 1, "creds": "creds.json"}, {"stock": {"AVGO": 1.0, "LLY": 2.0}, "investment": 3000.0, "account_value": 3000.0, "buying_power": 1342.7599792480469, "password": "bobo", "id": 2, "creds": "creds.json"}]
 
-## Running the code from Github
-🚀 How to Run This Project
+## 🚀 Running the code from Github
 Follow these steps to get the project running locally:
 
 1️⃣ Clone the Repository
 First, clone the repository from GitHub to your local machine:
 
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+<pre><code class="language-bash"> git clone https://github.com/hawraa7/Portfolio-Project-3.git
+ cd Portfolio-Project-3 </code></pre>
 
-1️⃣ Create a Virtual Environment
-<pre><code class="language-bash"> # Create virtual environment python3 -m venv .venv # or 'python -m venv .venv' # Activate it source .venv/bin/activate # macOS/Linux .venv\Scripts\activate # Windows </code></pre>
+1️⃣ Create and activate a Virtual Environment
+<pre><code class="language-bash"> python3 -m venv .venv # macOS/Linux
+ source .venv/bin/activate # macOS/Linux </code></pre>
+<pre><code class="language-bash"> python -m venv .venv # Windows
+ .venv\Scripts\activate # Windows </code></pre>
 2️⃣ Install Dependencies
 <pre><code class="language-bash"> pip install -r requirements.txt </code></pre>
 3️⃣ Set Environment Variables
 Create a file named env.py in the root directory with:
 
-<pre><code class="language-python"> GIST_ID = "your_gist_id_here" GITHUB_TOKEN = "your_github_token_here" </code></pre>
+<pre><code class="language-python"> GIST_ID = "your_gist_id_here" # since GIST_ID is a secret info it is not provided here
+ GITHUB_TOKEN = "your_github_token_here" # since GITHUB_TOKEN is a secret info it is not provided here</code></pre>
 ⚠️ Don’t commit env.py to your repo! Add it to .gitignore.
 
 4️⃣ Run the Code
-<pre><code class="language-bash"> python3 run.py # macOS/Linux python run.py # Windows </code></pre>
+<pre><code class="language-bash"> python3 run.py # macOS/Linux </code></pre>
+<pre><code class="language-bash"> python run.py # Windows </code></pre>
 
 
 ## Credits
